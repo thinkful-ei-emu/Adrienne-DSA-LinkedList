@@ -98,118 +98,125 @@ class LinkedList {
     }
     currNode.next = new _Node(item, currNode.next);
   }
+}
 
-  // not sure where to start with this
-  // know that I will need a while loop that probably just returns the values to some variable maybe? Would be the opposite of the point if push to an array
-  display() {
-
+function display(list) { //O(n) because has to traverse whole list to display the values
+  let string = '';
+  let tempNode = list.head;
+  while (tempNode !== null) {
+    string  = string + tempNode.value + ' ';
+    tempNode = tempNode.next;
   }
+  console.log(string);
+}
 
-  size() { //O(n) because has to traverse whole list to figure out size
-    let length = 0;
-    let currNode = this.head;
-    while(currNode.next !== null) {
-      length++;
-      currNode = currNode.next;
-    }
-    return length;
+function size(list) { //O(n) because has to traverse whole list to figure out size
+  let length = 0;
+  let currNode = list.head;
+  while(currNode.next !== null) {
+    length++;
+    currNode = currNode.next;
   }
+  return length;
+}
 
-  isEmpty() { //O(1) because just has to check if the head is null or not
-    if(this.head === null) {
-      return 'List is empty';
-    }
+function isEmpty(list) { //O(1) because just has to check if the head is null or not
+  if(list.head === null) {
+    return 'List is empty';
   }
+}
 
-  findPrevious(item) { //O(n) because has to traverse the list to find the item and keep track of the previous item
-    let currNode = this.head;
-    let previousNode  = this.head;
-    while(currNode.value !== item) {
-      previousNode = currNode;
-      currNode = currNode.next;
-      if(currNode.value === item) {
-        return previousNode.value;
-      }
-    }
-  }
-
-  findLast() { //O(n) because has to traverse through entire list
-    let currNode = this.head;
-    while(currNode.next !== null) {
-      currNode = currNode.next;
-      if(currNode.next === null) {
-        return `${currNode.value} is last item`;
-      }
+function findPrevious(list, item) { //O(n) because has to traverse the list to find the item and keep track of the previous item
+  let currNode = list.head;
+  let previousNode  = list.head;
+  while(currNode.value !== item) {
+    previousNode = currNode;
+    currNode = currNode.next;
+    if(currNode.value === item) {
+      return previousNode.value;
     }
   }
+}
 
-  reverseList() { //O(n) because has to go through whole list
-    let currNode = this.head;
-    let previousNode;
-    let nextNode;
-    if(this.head === null) {
-      console.log('No items in list');
+function findLast(list) { //O(n) because has to traverse through entire list
+  let currNode = list.head;
+  while(currNode.next !== null) {
+    currNode = currNode.next;
+    if(currNode.next === null) {
+      return `${currNode.value} is last item`;
+    }
+  }
+}
+
+function reverseList(list) { //O(n) because has to go through whole list
+  let currNode = list.head;
+  let previousNode;
+  let nextNode;
+  if(list.head === null) {
+    console.log('No items in list');
+    return;
+  }
+  while(currNode !== null) {
+    nextNode = currNode.next;
+    currNode.next = previousNode;
+    previousNode = currNode;
+    currNode = nextNode;
+  }
+  list.head = previousNode;
+  return previousNode;
+}
+
+function thirdFromEnd(list) { //O(n) because has to go through whole list
+  let currNode = list.head;
+  console.log(currNode);
+  let previousNode = list.head;
+  let nodeBefore = list.head;
+  while(currNode.next !== null) {
+    nodeBefore = previousNode;
+    previousNode = currNode;
+    currNode = currNode.next;
+    if(currNode.next === null) {
+      // console.log(nodeBefore.value);
+      return nodeBefore.value;
+    }
+  }
+}
+
+function middle(list) { //O(n) because has to go through whole list
+  let currNode = list.head;
+  let nextNode = list.head;
+  while(nextNode !== null && nextNode.next !== null) {
+    currNode = currNode.next;
+    nextNode = nextNode.next.next;
+  }
+  return currNode.value;
+}
+
+function cycleList(list) {
+  let flag = Math.random();
+  let currNode = list.head;
+  while(currNode !== null) {
+    if(currNode.value === flag) {
+      return true;
+    }
+    currNode.value = flag;
+    currNode = currNode.next;
+  }
+  return false;
+}
+
+function findCycle(list) {
+  let fast = list.head;
+  let slow = list.head;
+  while(slow !== null && fast !== null && fast.next !== null) {
+    slow = slow.next;
+    fast = fast.next.next;
+    if(slow === fast) {
+      console.log('Found cycle');
       return;
     }
-    while(currNode !== null) {
-      nextNode = currNode.next;
-      currNode.next = previousNode;
-      previousNode = currNode;
-      currNode = nextNode;
-    }
-    this.head = previousNode;
-    return previousNode;
   }
-
-  thirdFromEnd() { //O(n) because has to go through whole list
-    // work on tomorrow with casey; when the reverseList function is not commented out says that currNode.next is undefined or null and breaks program; but next is defined and it works if reverse list is commented out which is strange
-    let currNode = this.head;
-    console.log(currNode);
-    let previousNode = this.head;
-    let nodeBefore = this.head;
-    while(currNode.next !== null) {
-      nodeBefore = previousNode;
-      previousNode = currNode;
-      currNode = currNode.next;
-      if(currNode.next === null) {
-        // console.log(nodeBefore.value);
-        return nodeBefore.value;
-      }
-    }
-  }
-
-  middle() { //O(n) because has to go through whole list
-    let currNode = this.head;
-    let nextNode = this.head;
-    while(nextNode !== null && nextNode.next !== null) {
-      currNode = currNode.next;
-      nextNode = nextNode.next.next;
-    }
-    return currNode;
-  }
-
-  cycleList() {
-    let currNode = this.head;
-    // console.log(currNode.next.value);
-    // potentially would want to check address 
-  }
-
-  WhatDoesThisProgramDo(lst) {
-    let current = lst.head;
-    while (current !== null) {
-      let newNode = current;
-      while (newNode.next !== null) {
-        if (newNode.next.value === current.value) {
-          newNode.next = newNode.next.next;
-        }
-        else {
-          newNode = newNode.next;
-        }
-      }
-      current = current.next;
-      console.log(current);
-    }
-  }
+  console.log('No cycle found');
 }
 
 // 2 & 3
@@ -222,27 +229,31 @@ function main() {
   SLL.insertLast('Starbuck');
   SLL.insertLast('Tauhida');
   // SLL.remove('squirrel'); //Item not found becasue was not in list to begin with
-  // SLL.insertBefore('Athena', 'Boomer');
-  // SLL.insertAfter('Hotdog', 'Helo');
-  // SLL.insertAt('Kat', 3);
-  // SLL.remove('Tauhida');
-  // SLL.size();
+  SLL.insertBefore('Athena', 'Boomer');
+  SLL.insertAfter('Hotdog', 'Helo');
+  SLL.insertAt('Kat', 3);
+  SLL.remove('Tauhida');
+  // display(SLL);
+  // size(SLL);
   // console.log(JSON.stringify(SLL));
-  // SLL.isEmpty();
-  // SLL.findPrevious('Athena');
-  // SLL.findLast();
-  SLL.reverseList();
-  console.log(JSON.stringify(SLL));
-  SLL.thirdFromEnd();
-  SLL.middle();
-  // const cycleList = 
-  // SLL.cycleList();
+  // isEmpty(SLL);
+  // findPrevious(SLL, 'Boomer');
+  // findLast(SLL);
+  // reverseList(SLL);
+  // console.log(JSON.stringify(SLL));
+  // thirdFromEnd(SLL);
+  // middle(SLL);
+  // findCycle(SLL);
+  // cycleList(SLL);
+  // SLL.head.next.next = SLL.head;
+  // findCycle(SLL);
+  // console.log(cycleList(SLL));
 }
 main();
 
 // 4
 /**
  * Mystery program 
- * Eliminating duplicates from the linked list?
- * O(n^2) because nested while loops?
+ * Eliminating duplicates from the linked list
+ * O(n^2) because nested while loops
  */
